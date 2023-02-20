@@ -1,15 +1,21 @@
 import '../styles/globals.css'
 
-export default function RootLayout({
+import { SessionProvider } from '../components/SessionProvider'
+import { authOptions } from '../pages/api/auth/[...nextAuth]'
+import { getServerSession } from 'next-auth'
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session =  await getServerSession(authOptions)
   return (
     <html>
       <head />
       <body>
-        <div className='flex'>
+        <SessionProvider session={session}>
+          <div className='flex'>
 
           {/* Sidebar */}
 
@@ -17,6 +23,7 @@ export default function RootLayout({
 
           <div className='bg-[#343541] flex-1'>{children}</div>
         </div>
+        </SessionProvider>
       </body>
     </html>
   )
